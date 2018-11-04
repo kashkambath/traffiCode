@@ -40,15 +40,22 @@ def join_csv(dir):
     g.close()
     return ls
 
-def date_time(csv):
-    f = open(dir + '/' + file, errors='replace')
+def date_time(file):
+    f = open(file, errors='replace')
     ls = list(csv.reader(f))
-    for row in ls:
+    i = 0
+    for row in ls[1:]:
         date = row[3]
+        time = row[4]
         time = "%04d" % int(row[4])
-        hour, min = time[0:2], time[2:4]
-        dt = "%s %s:%s"
-        dt = datetime.strptime("", null)
+        dt = "%s %s" % (date, time)
+        dt = datetime.strptime(dt, "%m/%d/%y %H%M")
+        row.insert(5, dt)
+    ls[0].insert(5, 'COLLISION_DATE')
+    with open('edit_cleaned.csv', 'w') as g:
+        writer = csv.writer(g, lineterminator="\n")
+        writer.writerows(ls)
 
+date_time('cleaned.csv')
 #join_csv('./csv')
 
